@@ -13,12 +13,9 @@ export class ProductsModel {
   }
 
   getProduct(id: string): IProduct | undefined {
-    for (const item of this.items) {
-      if (item.id === id) {
-        return item;
-      }
-    }
-    return undefined;
+    return this.items.find(function (item) {
+      return item.id === id;
+    });
   }
 
   setPreview(product: IProduct): void {

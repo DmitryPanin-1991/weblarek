@@ -2,7 +2,7 @@ import { IBuyer } from "../../types";
 
 export class BuyerModel {
   private data: IBuyer = {
-    payment: "card",
+    payment: null,
     address: "",
     email: "",
     phone: "",
@@ -30,8 +30,12 @@ export class BuyerModel {
     return this.data;
   }
 
-  validate(): Record<string, string> {
-    const errors: Record<string, string> = {};
+  validate(): TValidateErrors {
+    const errors: TValidateErrors = {};
+
+    if (!this.data.payment) {
+      errors.payment = "Выберите способ оплаты";
+    }
 
     if (!this.data.address) {
       errors.address = "Введите адрес";

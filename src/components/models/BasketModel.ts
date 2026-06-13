@@ -15,13 +15,9 @@ export class BasketModel {
   }
 
   removeProduct(id: string): void {
-    const newItems: IProduct[] = [];
-    for (const item of this.items) {
-      if (item.id !== id) {
-        newItems.push(item);
-      }
-    }
-    this.items = newItems;
+    this.items = this.items.filter(function (item) {
+      return item.id !== id;
+    });
   }
 
   clear(): void {
@@ -29,13 +25,12 @@ export class BasketModel {
   }
 
   getTotalPrice(): number {
-    let total = 0;
-    for (const item of this.items) {
+    return this.items.reduce(function (sum, item) {
       if (item.price !== null) {
-        total += item.price;
+        return sum + item.price;
       }
-    }
-    return total;
+      return sum;
+    }, 0);
   }
 
   getCount(): number {
@@ -43,11 +38,8 @@ export class BasketModel {
   }
 
   hasProduct(id: string): boolean {
-    for (const item of this.items) {
-      if (item.id === id) {
-        return true;
-      }
-    }
-    return false;
+    return this.items.some(function (item) {
+      return item.id === id;
+    });
   }
 }

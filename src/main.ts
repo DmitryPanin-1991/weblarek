@@ -15,9 +15,14 @@ const buyerModel = new BuyerModel();
 
 const api = new Api(API_URL);
 const webLApi = new WebLApi(api);
-webLApi.getProducts().then(function (data) {
-  console.log("Товары, полученные с сервера: ", data);
-});
+webLApi
+  .getProducts()
+  .then(function (data) {
+    console.log("Товары, полученные с сервера: ", data);
+  })
+  .catch(function (error) {
+    console.log("Возникла ошибка при загрузке товаров: ", error);
+  });
 
 productsModel.setItems(apiProducts.items);
 console.log("Массив всех товаров из каталога: ", productsModel.getItems());
@@ -51,8 +56,8 @@ buyerModel.setData({
 });
 console.log("Данные покупателя: ", buyerModel.getData());
 console.log("Валидация: ", buyerModel.validate());
-buyerModel.setData({ email: "" });
+buyerModel.setData({ payment: null });
 console.log(
-  "Валидация после удаления электронной почты: ",
+  "Валидация после того, как убрали способ оплаты: ",
   buyerModel.validate(),
 );

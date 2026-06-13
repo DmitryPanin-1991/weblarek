@@ -21,7 +21,7 @@ export interface IProduct {
 }
 
 export interface IBuyer {
-  payment: TPayment;
+  payment: TPayment | null;
   address: string;
   email: string;
   phone: string;
@@ -44,4 +44,11 @@ export interface IOrder {
 export interface IOrderResponse {
   id: string;
   total: number;
+}
+
+export type TValidateErrors = {
+  payment?: string;
+  address?: string;
+  email?: string;
+  phone?: string;
 }
