@@ -37,7 +37,7 @@ export interface IOrder {
   address: string;
   email: string;
   phone: string;
-  items: IProduct[];
+  items: string[];
   total: number;
 }
 
