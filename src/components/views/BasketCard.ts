@@ -1,5 +1,5 @@
 import { Card } from "./Card";
-import { IEvents } from "../base/Events";
+import { ensureElement } from "../../utils/utils";
 
 type BasketCardAction = {
   onClick: () => void;
@@ -9,15 +9,14 @@ export class BasketCard extends Card {
   protected _index: HTMLElement;
   protected _button: HTMLButtonElement;
 
-  constructor(
-    container: HTMLElement,
-    events: IEvents,
-    action?: BasketCardAction,
-  ) {
-    super(container, events);
+  constructor(container: HTMLElement, action?: BasketCardAction) {
+    super(container);
 
-    this._index = container.querySelector(".basket__item-index");
-    this._button = container.querySelector(".basket__item-delete");
+    this._index = ensureElement<HTMLElement>(".basket__item-index", container);
+    this._button = ensureElement<HTMLButtonElement>(
+      ".basket__item-delete",
+      container,
+    );
 
     if (action) {
       this._button.addEventListener("click", () => {

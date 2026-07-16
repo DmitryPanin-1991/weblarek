@@ -27,11 +27,7 @@ export class Basket extends Component<TBasket> {
   }
 
   set items(items: HTMLElement[]) {
-    if (items.length > 0) {
-      this._list.replaceChildren(...items);
-    } else {
-      this._list.textContent = "Корзина пуста";
-    }
+    this._list.replaceChildren(...items);
   }
 
   set total(value: number) {

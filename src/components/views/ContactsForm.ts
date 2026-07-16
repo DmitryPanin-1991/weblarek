@@ -1,5 +1,6 @@
 import { Form } from "./Form";
 import { IEvents } from "../base/Events";
+import { ensureElement } from "../../utils/utils";
 
 type TContactsForm = {
   email: string;
@@ -7,8 +8,21 @@ type TContactsForm = {
 };
 
 export class ContactsForm extends Form<TContactsForm> {
+  protected _email: HTMLInputElement;
+  protected _phone: HTMLInputElement;
+
   constructor(container: HTMLFormElement, events: IEvents) {
     super(container, events);
+
+    this._email = ensureElement<HTMLInputElement>(
+      'input[name="email"]',
+      container,
+    );
+
+    this._phone = ensureElement<HTMLInputElement>(
+      'input[name="phone"]',
+      container,
+    );
 
     this.container.addEventListener("input", (event) => {
       const target = event.target as HTMLInputElement;
@@ -23,5 +37,13 @@ export class ContactsForm extends Form<TContactsForm> {
         });
       }
     });
+  }
+
+  set email(value: string) {
+    this._email.value = value;
+  }
+
+  set phone(value: string) {
+    this._phone.value = value;
   }
 }

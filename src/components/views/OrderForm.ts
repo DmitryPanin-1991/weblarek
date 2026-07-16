@@ -1,5 +1,7 @@
 import { Form } from "./Form";
 import { IEvents } from "../base/Events";
+import { ensureElement } from "../../utils/utils";
+import { ensureAllElements } from "../../utils/utils";
 import { TPayment } from "../../types";
 
 type TOrderForm = {
@@ -9,22 +11,23 @@ type TOrderForm = {
 
 export class OrderForm extends Form<TOrderForm> {
   protected _paymentButtons: HTMLButtonElement[];
+  protected _address: HTMLInputElement;
 
   constructor(container: HTMLFormElement, events: IEvents) {
     super(container, events);
 
-    this._paymentButtons = Array.from(
-      container.querySelectorAll(".button_alt"),
+    this._paymentButtons = ensureAllElements<HTMLButtonElement>(
+      ".button_alt",
+      container,
+    );
+
+    this._address = ensureElement<HTMLInputElement>(
+      'input[name="address"]',
+      container,
     );
 
     this._paymentButtons.forEach((button) => {
       button.addEventListener("click", () => {
-        this._paymentButtons.forEach((item) => {
-          item.classList.remove("button_alt-active");
-        });
-
-        button.classList.add("button_alt-active");
-
         this.events.emit("order.payment:change", {
           payment: button.name,
         });
@@ -39,10 +42,13 @@ export class OrderForm extends Form<TOrderForm> {
     });
   }
 
-  reset(): void {
+  set address(value: string) {
+    this._address.value = value;
+  }
+
+  set payment(value: TPayment | null) {
     this._paymentButtons.forEach((button) => {
-      button.classList.remove("button_alt-active");
+      button.classList.toggle("button_alt-active", button.name === value);
     });
-    super.reset();
   }
 }

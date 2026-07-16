@@ -1,5 +1,6 @@
 import { Component } from "../base/Component";
 import { IEvents } from "../base/Events";
+import { ensureElement } from "../../utils/utils";
 
 export class Form<T> extends Component<T> {
   protected _submit: HTMLButtonElement;
@@ -9,8 +10,11 @@ export class Form<T> extends Component<T> {
   constructor(container: HTMLFormElement, events: IEvents) {
     super(container);
 
-    this._submit = container.querySelector('button[type="submit"]');
-    this._errors = container.querySelector(".form__errors");
+    this._submit = ensureElement<HTMLButtonElement>(
+      'button[type="submit"]',
+      container,
+    );
+    this._errors = ensureElement<HTMLElement>(".form__errors", container);
 
     this.events = events;
 
@@ -26,15 +30,5 @@ export class Form<T> extends Component<T> {
 
   set errors(value: string) {
     this._errors.textContent = value;
-  }
-
-  render(state: Partial<T> & { valid: boolean; errors: string }): HTMLElement {
-    super.render(state);
-
-    return this.container;
-  }
-
-  reset(): void {
-    this.container.reset();
   }
 }
